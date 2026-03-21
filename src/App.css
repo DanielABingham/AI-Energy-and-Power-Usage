@@ -204,11 +204,11 @@ body {
   min-height: 24px;
   max-height: 180px;
   overflow-y: auto;
+  padding-bottom: 3px; /* Center text*/
 }
 
 .chat-input::placeholder {
   color: #787878;
-  text-align: left;
 }
 
 .submit-btn {
