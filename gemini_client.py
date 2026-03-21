@@ -32,11 +32,15 @@ def calc_water_energy(token_count):
         greenhouse CO2 equivalent / prompt = gCO2e / Wh
     Water (mL/prompt) 0.26
     """
-    print("You used", token_count, "tokens for this response. That equates to about:\n")
-    print((token_count/50) * 0.24, "watt hours")
-    print(0, "CO2 or equivalent")
+    watt_hours_used = (token_count/50) * 0.24
+    grams_CO2e_used = (token_count/50) * 0.03
+    mL_water_used = (token_count/50) * 0.26
+    return watt_hours_used, grams_CO2e_used, mL_water_used
     
 
 resp = get_response("Explain AI in a few words")
 print(resp[0])
-calc_water_energy(resp[1])
+resrc_used = calc_water_energy(resp[1])
+print(f"You used {resrc_used[0]} watt-hours,"
+      f"{resrc_used[1]} grams of CO2 or its equivalents, "
+      f"and {resrc_used[2]} mL of water")
