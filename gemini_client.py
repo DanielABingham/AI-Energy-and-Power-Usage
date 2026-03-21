@@ -24,9 +24,10 @@ def get_response(prompt):
             system_instruction = SYS_INSTRUCTION,
         )
     )
-    print(response.usage_metadata)
+    #print(response.usage_metadata.total_token_count)
 
     #response.count_tokens()
-    return response.text
+    return response.text, response.usage_metadata.total_token_count
 
-print(get_response("Explain AI in a few words"))
+resp = get_response("Explain AI in a few words")
+print(resp[0], "You used", resp[1], "tokens to generate this response")
