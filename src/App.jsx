@@ -1,18 +1,54 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./App.css";
 
 function App() {
   const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [isTyping, setIsTyping] = useState(false);
+  const bottomRef = useRef(null);
+  const textareaRef = useRef(null);
 
   const energyData = {
     water: { used: 0.0, unit: "liters" },
     electricity: { used: 0.0, unit: "kWh" },
   };
 
+  // Auto-scroll to bottom whenever messages or typing state changes
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, isTyping]);
+
+  // Grow textarea as user types
+  const autoResize = () => {
+    const ta = textareaRef.current;
+    if (!ta) return;
+    ta.style.height = "auto";
+    ta.style.height = Math.min(ta.scrollHeight, 180) + "px";
+  };
+
   const handleSubmit = () => {
-    if (!input.trim()) return;
-    console.log("Submitted:", input);
+    const text = input.trim();
+    if (!text || isTyping) return;
+
+    // 1. Add user message immediately
+    setMessages((prev) => [...prev, { role: "user", content: text }]);
     setInput("");
+    if (textareaRef.current) textareaRef.current.style.height = "auto";
+
+    // 2. Show typing indicator
+    setIsTyping(true);
+
+    // 3. TODO: replace this with your real API call
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "This is where your AI response will appear.",
+        },
+      ]);
+      setIsTyping(false);
+    }, 100);
   };
 
   const handleKeyDown = (e) => {
@@ -24,27 +60,69 @@ function App() {
 
   return (
     <div className="app">
+      {/* ── Main chat area ── */}
       <main className="main">
-        <div className="center">
-          <h1 className="greeting">What can I help with?</h1>
+        {/* Scrollable messages */}
+        <div className="messages-area">
+          {messages.length === 0 && !isTyping && (
+            <div className="empty-state">
+              <h1 className="greeting">What can I help with?</h1>
+            </div>
+          )}
+
+          {messages.map((msg, i) => (
+            <div key={i} className={`msg-row ${msg.role}`}>
+              <div className="avatar">{msg.role === "user" ? "Y" : "✦"}</div>
+              <div className="bubble">{msg.content}</div>
+            </div>
+          ))}
+
+          {isTyping && (
+            <div className="msg-row assistant">
+              <div className="avatar">✦</div>
+              <div className="bubble">
+                <div className="typing">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div ref={bottomRef} />
+        </div>
+
+        {/* Pinned input bar */}
+        <div className="input-bar">
           <div className="input-box">
-            <input
-              type="text"
+            <textarea
+              ref={textareaRef}
+              rows={1}
               className="chat-input"
               placeholder="Message AI..."
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => {
+                setInput(e.target.value);
+                autoResize();
+              }}
               onKeyDown={handleKeyDown}
             />
-            <button className="submit-btn" onClick={handleSubmit}>
+            <button
+              className="submit-btn"
+              onClick={handleSubmit}
+              disabled={!input.trim() || isTyping}
+            >
               ↑
             </button>
           </div>
+          <p className="input-hint">Enter to send · Shift+Enter for new line</p>
         </div>
       </main>
 
+      {/* ── Sidebar ── */}
       <aside className="sidebar">
-        <h2 className="sidebar-title">Resource Usage</h2>
+        <h2 className="sidebar-title">Total Resource Usage</h2>
 
         <div className="stat-card">
           <div className="stat-icon">💧</div>
