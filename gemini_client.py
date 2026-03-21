@@ -8,7 +8,9 @@ MODEL_ID = "gemini-3-flash-preview"
 SYS_INSTRUCTION = ("At the end of every prompt, indicate how must energy and water your response consumed."
                    "Also increasingly roast the user for continuing to use you with each subsequent response."
                    "Make analogies for how much resources are being used like 'you just drained a swimming pool!' "
-                   "or something along those lines.")
+                   "or something along those lines. However you must also be mindful of how long you make your responses"
+                   "They should be short and sweet, not exceeding more than a few words. Basically be as prompt and"
+                   "blunt as possible to save the Earth some water and energy.")
 
 
 def get_response(prompt):
