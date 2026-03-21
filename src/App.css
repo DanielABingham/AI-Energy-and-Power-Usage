@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0d0d0d;
+  color: #f0f0f0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  width: 100%;
+  max-width: 680px;
+  padding: 0 24px;
+}
+
+.greeting {
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: #f0f0f0;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #2e2e2e;
+  border-radius: 16px;
+  padding: 12px 12px 12px 20px;
+  gap: 10px;
+}
+
+.chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #f0f0f0;
+}
+
+.chat-input::placeholder {
+  color: #555;
+}
+
+.submit-btn {
+  background: #f0f0f0;
+  color: #0d0d0d;
+  border: none;
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover {
+  background: #ccc;
+}
