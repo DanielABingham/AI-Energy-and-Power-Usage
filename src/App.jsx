@@ -44,12 +44,12 @@ function App() {
       </main>
 
       <aside className="sidebar">
-        <h2 className="sidebar-title">Energy Consumption</h2>
+        <h2 className="sidebar-title">Resource Usage</h2>
 
         <div className="stat-card">
           <div className="stat-icon">💧</div>
           <div className="stat-info">
-            <span className="stat-label">Water</span>
+            <span className="stat-label">Water Used</span>
             <span className="stat-value">
               {energyData.water.used.toFixed(2)}
               <span className="stat-unit"> {energyData.water.unit}</span>
@@ -60,7 +60,7 @@ function App() {
         <div className="stat-card">
           <div className="stat-icon">⚡</div>
           <div className="stat-info">
-            <span className="stat-label">Electricity</span>
+            <span className="stat-label">Electricity Used</span>
             <span className="stat-value">
               {energyData.electricity.used.toFixed(4)}
               <span className="stat-unit"> {energyData.electricity.unit}</span>
