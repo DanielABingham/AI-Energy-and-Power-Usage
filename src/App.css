@@ -207,7 +207,8 @@ body {
 }
 
 .chat-input::placeholder {
-  color: #555;
+  color: #787878;
+  text-align: left;
 }
 
 .submit-btn {
@@ -242,7 +243,7 @@ body {
 
 .input-hint {
   font-size: 0.68rem;
-  color: #333;
+  color: #9e9e9e;
   text-align: center;
   margin-top: 8px;
 }
@@ -263,8 +264,8 @@ body {
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: #555;
+  letter-spacing: 2px;
+  color: #9e9e9e;
   margin-bottom: 4px;
 }
 
@@ -290,7 +291,7 @@ body {
 
 .stat-label {
   font-size: 0.75rem;
-  color: #666;
+  color: #9e9e9e;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -303,12 +304,12 @@ body {
 
 .stat-unit {
   font-size: 0.75rem;
-  color: #555;
+  color: #d5d4d4;
 }
 
 .sidebar-note {
   font-size: 0.7rem;
-  color: #333;
+  color: #9e9e9e;
   text-align: center;
   margin-top: auto;
 }
@@ -347,7 +348,6 @@ body {
 
   .app {
     flex-direction: column;
-    height: auto;
     height: 100vh;
     padding-bottom: 110px;
   }
