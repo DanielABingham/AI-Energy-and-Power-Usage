@@ -30,4 +30,4 @@ def get_response(prompt):
     return response.text, response.usage_metadata.total_token_count
 
 resp = get_response("Explain AI in a few words")
-print(resp[0], "You used", resp[1], "tokens to generate this response")
+print(resp[0], "\nYou used", resp[1], "tokens to generate this response")
