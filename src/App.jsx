@@ -116,7 +116,7 @@ function App() {
               ↑
             </button>
           </div>
-          <p className="input-hint">Enter to send · Shift+Enter for new line</p>
+          <p className="input-hint">Press enter/return to send your message (Press shift key + enter/return key to go to a new line)</p>
         </div>
       </main>
 
