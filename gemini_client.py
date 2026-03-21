@@ -11,6 +11,7 @@ SYS_INSTRUCTION = ("At the end of every prompt, indicate how must energy and wat
                    "or something along those lines. However you must also be mindful of how long you make your responses"
                    "They should be short and sweet, not exceeding more than a few words. Basically be as prompt and"
                    "blunt as possible to save the Earth some water and energy.")
+# At the
 
 
 def get_response(prompt):
@@ -21,10 +22,21 @@ def get_response(prompt):
             system_instruction = SYS_INSTRUCTION,
         )
     )
-    #print(response.usage_metadata.total_token_count)
-
-    #response.count_tokens()
     return response.text, response.usage_metadata.total_token_count
 
+def calc_water_energy(token_count):
+    """
+    Assume avg 50 tokens
+    Energy (Wh/prompt) 0.24
+    Emissions (gCO2e/prompt) 0.03
+        greenhouse CO2 equivalent / prompt = gCO2e / Wh
+    Water (mL/prompt) 0.26
+    """
+    print("You used", token_count, "tokens for this response. That equates to about:\n")
+    print((token_count/50) * 0.24, "watt hours")
+    print(0, "CO2 or equivalent")
+    
+
 resp = get_response("Explain AI in a few words")
-print(resp[0], "\nYou used", resp[1], "tokens to generate this response")
+print(resp[0])
+calc_water_energy(resp[1])
