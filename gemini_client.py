@@ -14,11 +14,6 @@ SYS_INSTRUCTION = ("At the end of every prompt, indicate how must energy and wat
 
 
 def get_response(prompt):
-    total_tokens = client.models.count_tokens(
-        model = MODEL_ID,
-        contents = prompt,
-    )
-
     response = client.models.generate_content(
         model = MODEL_ID,
         contents = prompt,
