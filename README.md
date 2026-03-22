@@ -18,7 +18,11 @@ First you must clone the repo (enter your SSH passcode)
 git clone https://github.com/DanielABingham/I-Think-Therefore-I-Burn.git
 ```
 Next, you will want to open the project in a code editor or IDE
-Then, you will want to open the terminal and run the web app using 
+Install any dependencies using:
+```
+npm install
+```
+Then, you will want to open the terminal and run the web app using:
 ```
 npm run dev
 ```
