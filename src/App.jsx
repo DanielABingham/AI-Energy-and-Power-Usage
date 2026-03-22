@@ -1,4 +1,10 @@
 import { useState, useRef, useEffect } from "react";
+import {
+  getWaterComparison,
+  getElectricityComparison,
+  getCarbonComparison,
+} from "./utils/comparisons";
+
 import "./App.css";
 
 function App() {
@@ -11,7 +17,7 @@ function App() {
   const energyData = {
     water: { used: 0.0, unit: "liters" },
     electricity: { used: 0.0, unit: "kWh" },
-    carbon: { used: 0.0, unit: "gCO2e"}
+    carbon: { used: 0.0, unit: "gCO2e" },
   };
 
   // Auto-scroll to bottom whenever messages or typing state changes
@@ -117,7 +123,10 @@ function App() {
               ↑
             </button>
           </div>
-          <p className="input-hint">Press enter/return to send your message (Press shift key + enter/return key to go to a new line)</p>
+          <p className="input-hint">
+            Press enter/return to send your message (Press shift key +
+            enter/return key to go to a new line)
+          </p>
         </div>
       </main>
 
