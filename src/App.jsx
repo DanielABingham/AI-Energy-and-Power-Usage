@@ -15,13 +15,34 @@ They should be short and sweet, not exceeding more than a few words. Basically b
 blunt as possible to save the Earth some water and energy.`*/;
 
 // ── ElevenLabs Config ──────────────────────────────────────────────────────
-const ELEVENLABS_API_KEY = import.meta.env.ELEVENLABS_API;
+const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY;
 const VOICE_ID = "Pc6mkcSQXB2l3WmfeKVS"
 const VOICE_MODEL = "eleven_v3"
 /*
 WATT_HOURS_THRESHOLD = 10
 GRAMS_CO2E_THRESHOLD = 10
 ML_WATER_THRESHOLD = 10
+*/
+/*
+CODE WORKS USE THIS
+const response = await fetch(
+  `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
+  {
+    method: 'POST',
+    headers: {
+      'xi-api-key': ELEVENLABS_API_KEY,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      text: 'Hello, world!',
+      model_id: 'eleven_turbo_v2',
+    }),
+  }
+);
+const audioBlob = await response.blob();
+const audioUrl = URL.createObjectURL(audioBlob);
+const audio = new Audio(audioUrl);
+await audio.play();
 */
 
 // ── Resource calculator (ported from Python) ───────────────────────────────
