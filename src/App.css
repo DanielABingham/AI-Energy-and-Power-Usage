@@ -17,7 +17,8 @@ body {
   display: flex;
   flex-direction: row;
   height: 100vh;
-  width: 87vw; /* Make the chat window bigger */
+  display: flex;
+  justify-content: center;
 }
 
 /* ── Main: flex column so messages grow and input stays pinned ── */
@@ -174,6 +175,7 @@ body {
   padding: 12px 24px 20px;
   border-top: 1px solid #1f1f1f;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .input-box {
