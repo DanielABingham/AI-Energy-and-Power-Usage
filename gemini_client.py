@@ -5,7 +5,7 @@ import os
 load_dotenv()
 
 # Initialize Gemini client #
-client = genai.Client(api_key = os.environ.get("GEMINI_API"))
+client = genai.Client(api_key = os.environ.get("VITE_GEMINI_API_KEY"))
 MODEL_ID = "gemini-3-flash-preview"
 SYS_INSTRUCTION = ("At the end of every prompt, indicate how much energy and water your response consumed."
                    "Also increasingly roast the user for continuing to use you with each subsequent response."

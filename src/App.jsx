@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import "./App.css";
 
 // ── Gemini config ──────────────────────────────────────────────────────────
-const VITE_GEMINI_API_KEY = import.meta.env.GEMINI_API;
-const MODEL = "gemini-2.0-flash";
+const VITE_GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const MODEL = "gemini-2.5-flash";
 
 const SYS_INSTRUCTION = `At the end of every prompt, indicate how much energy and water your response consumed.
 Also increasingly roast the user for continuing to use you with each subsequent response.
