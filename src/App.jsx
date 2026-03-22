@@ -11,6 +11,7 @@ function App() {
   const energyData = {
     water: { used: 0.0, unit: "liters" },
     electricity: { used: 0.0, unit: "kWh" },
+    carbon: { used: 0.0, unit: "gCO2e"}
   };
 
   // Auto-scroll to bottom whenever messages or typing state changes
@@ -142,6 +143,17 @@ function App() {
             <span className="stat-value">
               {energyData.electricity.used.toFixed(4)}
               <span className="stat-unit"> {energyData.electricity.unit}</span>
+            </span>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">♻️</div>
+          <div className="stat-info">
+            <span className="stat-label">Carbon Impact</span>
+            <span className="stat-value">
+              {energyData.electricity.used.toFixed(2)}
+              <span className="stat-unit"> {energyData.carbon.unit}</span>
             </span>
           </div>
         </div>
