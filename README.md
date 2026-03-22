@@ -15,7 +15,7 @@ We want to try to get the latency for the ElevenLabs API call down as it takes 1
 ## How to run
 First you must clone the repo (enter your SSH passcode)
 ```
-git clone git@github.com:DanielABingham/I-Think-Therefore-I-Burn.git
+git clone https://github.com/DanielABingham/I-Think-Therefore-I-Burn.git
 ```
 Next, you will want to open the project in a code editor or IDE
 Then, you will want to open the terminal and run the web app using 
