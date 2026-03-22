@@ -1,13 +1,15 @@
 import { useState, useRef, useEffect } from "react";
+import NumberFlow from "@number-flow/react";
 import "./App.css";
 
 // ── Gemini config ──────────────────────────────────────────────────────────
 const VITE_GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const MODEL = "gemini-2.5-flash";
 
-const SYS_INSTRUCTION = "Roast me for using AI carelessly. Make analogies to shame the user."
-+ "YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language."
-+ "In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and wasted {curr_water} milliliters of water.";
+const SYS_INSTRUCTION =
+  "Roast me for using AI carelessly. Make analogies to shame the user." +
+  "YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language." +
+  "In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and wasted {curr_water} milliliters of water.";
 /*`At the end of every prompt, indicate how much energy and water your response consumed.
 Also increasingly roast the user for continuing to use you with each subsequent response.
 Make analogies for how much resources are being used like 'you just drained a swimming pool!'
@@ -17,41 +19,40 @@ blunt as possible to save the Earth some water and energy.`*/
 
 // ── ElevenLabs Config ──────────────────────────────────────────────────────
 const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY;
-const VOICE_ID = "Pc6mkcSQXB2l3WmfeKVS"
-const VOICE_MODEL = "eleven_v3"
+const VOICE_ID = "Pc6mkcSQXB2l3WmfeKVS";
+const VOICE_MODEL = "eleven_v3";
 
-const WATT_HOURS_THRESHOLD = 0.01
-const GRAMS_CO2E_THRESHOLD = 0.01
-const ML_WATER_THRESHOLD = 0.01
+const WATT_HOURS_THRESHOLD = 0.01;
+const GRAMS_CO2E_THRESHOLD = 0.01;
+const ML_WATER_THRESHOLD = 0.01;
 
 /*
 CODE WORKS USE THIS
 */
 async function scream(prompt) {
   const response = await fetch(
-  `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
-  {
-    method: 'POST',
-    headers: {
-      'xi-api-key': ELEVENLABS_API_KEY,
-      'Content-Type': 'application/json',
+    `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
+    {
+      method: "POST",
+      headers: {
+        "xi-api-key": ELEVENLABS_API_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: prompt,
+        model_id: VOICE_MODEL,
+      }),
     },
-    body: JSON.stringify({
-      text: prompt,
-      model_id: VOICE_MODEL,
-    }),
-  }
-);
+  );
   if (!response.ok) {
-  console.error("TTS failed!", await response.text());
-  return
-}
+    console.error("TTS failed!", await response.text());
+    return;
+  }
   const audioBlob = await response.blob();
   const audioUrl = URL.createObjectURL(audioBlob);
   const audio = new Audio(audioUrl);
   await audio.play();
 }
-
 
 // ── Resource calculator (ported from Python) ───────────────────────────────
 const calcResources = (tokenCount) => ({
@@ -82,12 +83,14 @@ function App() {
 
   // Assuming a 1000 watt microwave
   //const microwaveRunTime = (totals.wattHours / 1000) * 60;
-  const microwaveRunTime = Math.round(((totals.wattHours / 1000) * 60) * 1000) / 1000;
+  const microwaveRunTime =
+    Math.round((totals.wattHours / 1000) * 60 * 1000) / 1000;
 
   // Based on 8,887 grams of CO2/gallon of gasoline = 8.887 × 10-3 metric tons CO2/gallon of gasoline
   //const gasEmissionComparison = totals.gramsCO2 / 8887;
   // Alt, average passenger vehicle produces ~400 grams C02 per mile (https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle)
-  const gasEmissionComparison = Math.round((totals.gramsCO2 / 400) * 1000) / 1000;
+  const gasEmissionComparison =
+    Math.round((totals.gramsCO2 / 400) * 1000) / 1000;
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -161,10 +164,12 @@ function App() {
         gramsCO2: Math.round((prev.gramsCO2 + resources.gramsCO2) * 100) / 100,
       }));
 
-      if (totals.mLWater > ML_WATER_THRESHOLD &&
-          totals.wattHours > WATT_HOURS_THRESHOLD &&
-          totals.gramsCO2 > GRAMS_CO2E_THRESHOLD) {
-        await scream(reply)
+      if (
+        totals.mLWater > ML_WATER_THRESHOLD &&
+        totals.wattHours > WATT_HOURS_THRESHOLD &&
+        totals.gramsCO2 > GRAMS_CO2E_THRESHOLD
+      ) {
+        await scream(reply);
       }
     } catch (err) {
       console.error("Gemini error:", err);
@@ -275,8 +280,15 @@ function App() {
           <div className="stat-icon">💧</div>
           <div className="stat-info">
             <span className="stat-label">Water Used</span>
-            <span className="stat-value">
+            {/* <span className="stat-value">
               {totals.mLWater.toFixed(2)}
+              <span className="stat-unit"> mL</span>
+            </span> */}
+            <span className="stat-value">
+              <NumberFlow
+                value={totals.mLWater}
+                format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+              />
               <span className="stat-unit"> mL</span>
             </span>
           </div>
@@ -291,7 +303,10 @@ function App() {
           <div className="stat-info">
             <span className="stat-label">Electricity Used</span>
             <span className="stat-value">
-              {totals.wattHours.toFixed(2)}
+              <NumberFlow
+                value={totals.wattHours}
+                format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+              />
               <span className="stat-unit"> Wh</span>
             </span>
           </div>
@@ -306,8 +321,11 @@ function App() {
           <div className="stat-info">
             <span className="stat-label">Carbon Impact</span>
             <span className="stat-value">
-              {totals.gramsCO2.toFixed(2)}
-              <span className="stat-unit"> gCO2e</span>
+              <NumberFlow
+                value={totals.gramsCO2}
+                format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+              />
+              <span className="stat-unit"> gCO₂e</span>
             </span>
           </div>
         </div>
