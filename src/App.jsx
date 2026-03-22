@@ -35,20 +35,14 @@ function App() {
   const bottomRef = useRef(null);
   const textareaRef = useRef(null);
 
-  const energyData = {
-    water: { used: 0.0, unit: "mL" },
-    electricity: { used: 0.0, unit: "kWh" },
-    carbon: { used: 0.0, unit: "gCO2e" },
-  };
-
   // Assuming a 500 mL water bottle
-  const waterBottles = energyData.water.used / 500;
+  const waterBottles = totals.mLWater / 500;
 
   // Assuming a 1000 watt microwave
-  const microwaveRunTime = energyData.electricity.used;
+  const microwaveRunTime = totals.wattHours;
 
   // Based on 8,887 grams of CO2/gallon of gasoline = 8.887 × 10-3 metric tons CO2/gallon of gasoline
-  const gasEmissionComparison = (energyData.carbon.used / 8887).toFixed(6);
+  const gasEmissionComparison = (totals.gramsCO2 / 8887).toFixed(6);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -261,8 +255,8 @@ function App() {
           <div className="stat-info">
             <span className="stat-label">Carbon Impact</span>
             <span className="stat-value">
-              {energyData.carbon.used.toFixed(2)}
-              <span className="stat-unit"> {energyData.carbon.unit}</span>
+              {totals.gramsCO2.toFixed(2)}
+              <span className="stat-unit"> gCO2e</span>
             </span>
           </div>
         </div>
