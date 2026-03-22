@@ -279,13 +279,13 @@ body {
   padding: 16px;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 /* Add a cool hover effect to each stat card */
 .stat-card:hover {
   transform: scale(1.02) translateY(-5px);
-  box-shadow: 0 5px 30px 5px turquoise;
+  box-shadow: 0 5px 30px 5px #00661f;
 }
 
 .stat-icon {
