@@ -49,20 +49,9 @@ Then, while still in the terminal you will want to  and run the web app by runni
 npm run dev
 ```
 
-Make sure that Python is installed on your computer.
-Then,
-Run these commands in the terminal:
-```
-python3 -m venv venv
-source venv/bin/activate
-pip3 install -q -U google-genai
-pip3 install elevenlabs
-pip3 install python-dotenv
-```
-
 You will want to create a .env file and enter your Gemini and ElevenLabs API keys
 ```
-VITE_GEMINI_API_KEY= // enter you API key here
-VITE_ELEVENLABS_API_KEY= // enter your API key here
+VITE_GEMINI_API_KEY= # enter you API key here
+VITE_ELEVENLABS_API_KEY= # enter your API key here
 ```
 Now everything should work! Enjoy!
