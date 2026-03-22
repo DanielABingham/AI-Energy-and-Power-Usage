@@ -12,32 +12,25 @@ elevenlabs = ElevenLabs(
 VOICE_ID = "Pc6mkcSQXB2l3WmfeKVS"
 VOICE_MODEL = "eleven_v3"
 
+WATT_HOURS_THRESHOLD = 10
+GRAMS_CO2E_THRESHOLD = 10
+ML_WATER_THRESHOLD = 10
+
 
 def scream(prompt):
     audio = elevenlabs.text_to_speech.convert(
         voice_id = VOICE_ID,
         model_id = VOICE_MODEL,
-        text = prompt, #"Warning! You've exceeded 1 gallon of water. KILL YOURSELF!"
+        text = prompt,
         output_format = "mp3_44100_128",
     )
     play(audio)
 
 def check_currant_use(curr_wh, curr_co2, curr_water):
-    if curr_wh > 5 or curr_co2 > 5 or curr_water > 5:
+    if curr_wh > WATT_HOURS_THRESHOLD or curr_co2 > GRAMS_CO2E_THRESHOLD or curr_water > ML_WATER_THRESHOLD:
         roast = gemini_client.get_response(f"Roast me for using AI carelressly. Make analogies to shame the user."
                                            f"In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and waster {curr_water} milliliter of water."
                                            f"YELL ANGIRLY for your entire response. Pretend you are Samuel L Jackson")
         scream(roast[0])
 
-
 check_currant_use(1000, 1000, 1000)
-
-'''
-"At the end of every prompt, indicate how much energy and water your response consumed."
-                   "Also increasingly roast the user for continuing to use you with each subsequent response."
-                   "Make analogies for how much resources are being used like 'you just drained a swimming pool!' "
-                   "or something along those lines. However you must also be mindful of how long you make your responses"
-                   "They should be short and sweet, not exceeding more than a few words. Basically be as prompt and"
-                   "blunt as possible to save the Earth some water and energy."
-
-'''
