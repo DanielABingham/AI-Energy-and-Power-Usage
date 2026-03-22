@@ -15,10 +15,14 @@ function App() {
   const textareaRef = useRef(null);
 
   const energyData = {
-    water: { used: 0.0, unit: "mL" },
-    electricity: { used: 0.0, unit: "kWh" },
-    carbon: { used: 0.0, unit: "gCO2e" },
+    water: { used: 2.0, unit: "mL" },
+    electricity: { used: 3.0, unit: "kWh" },
+    carbon: { used: 2.0, unit: "gCO2e" },
   };
+
+  const waterNote = getWaterComparison(energyData.water.used);
+  const electricNote = getElectricityComparison(energyData.electricity.used);
+  const carbonNote = getCarbonComparison(energyData.carbon.used);
 
   // Auto-scroll to bottom whenever messages or typing state changes
   useEffect(() => {
@@ -142,6 +146,7 @@ function App() {
               {energyData.water.used.toFixed(2)}
               <span className="stat-unit"> {energyData.water.unit}</span>
             </span>
+            {waterNote && <p className="comparison-note">{waterNote}</p>}
           </div>
         </div>
 
@@ -153,6 +158,7 @@ function App() {
               {energyData.electricity.used.toFixed(4)}
               <span className="stat-unit"> {energyData.electricity.unit}</span>
             </span>
+            {electricNote && <p className="comparison-note">{electricNote}</p>}
           </div>
         </div>
 
@@ -164,6 +170,7 @@ function App() {
               {energyData.electricity.used.toFixed(2)}
               <span className="stat-unit"> {energyData.carbon.unit}</span>
             </span>
+            {carbonNote && <p className="comparison-note">{carbonNote}</p>}
           </div>
         </div>
 

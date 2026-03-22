@@ -342,6 +342,13 @@ body {
 }
 /* end fix issue with grey background on messages area on Chrome, Safari, Edge */
 
+.comparison-note {
+  font-size: 0.7rem;
+  color: #4a8c5c; /* subtle green — feels environmental */
+  margin-top: 6px;
+  line-height: 1.4;
+  font-style: italic;
+}
 /* ── Tablet ── */
 @media (max-width: 900px) {
   .sidebar {
@@ -363,6 +370,7 @@ body {
 
   .main {
     height: calc(100vh - 110px);
+    padding-bottom: 90px; /* matches fixed sidebar height */
   }
 
   .sidebar {
