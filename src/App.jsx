@@ -6,10 +6,12 @@ import "./App.css";
 const VITE_GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const MODEL = "gemini-2.5-flash";
 
-const SYS_INSTRUCTION =
-  "Roast me for using AI carelessly. Make analogies to shame the user." +
-  "YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language." +
-  "In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and wasted {curr_water} milliliters of water.";
+const SYS_INSTRUCTION = `You must be very mindful of how long you make your respones.
+Be as concise as possible to conserve water and energy. No more than a few words`;
+  
+//"Roast me for using AI carelessly. Make analogies to shame the user." +
+  //"YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language." +
+  //"In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and wasted {curr_water} milliliters of water.";
 /*`At the end of every prompt, indicate how much energy and water your response consumed.
 Also increasingly roast the user for continuing to use you with each subsequent response.
 Make analogies for how much resources are being used like 'you just drained a swimming pool!'
@@ -169,7 +171,9 @@ function App() {
         totals.wattHours > WATT_HOURS_THRESHOLD &&
         totals.gramsCO2 > GRAMS_CO2E_THRESHOLD
       ) {
-        await scream(reply);
+        await scream((`Roast me for using AI carelessly. Make analogies to shame the user.
+                        YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language.
+                        In total, I've used ${totals.mLWater} watt-hours of energy, generated ${totals.wattHours} grams of CO2 or equivalent, and wasted ${totals.gramsCO2} milliliters of water.`));
       }
     } catch (err) {
       console.error("Gemini error:", err);
