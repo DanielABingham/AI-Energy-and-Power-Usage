@@ -37,7 +37,9 @@ First you must clone the repo
 ```
 git clone https://github.com/DanielABingham/I-Think-Therefore-I-Burn.git
 ```
+
 Next, you will want to open the project in a code editor or IDE
+
 Open the terminal and then install any dependencies using:
 ```
 npm install
