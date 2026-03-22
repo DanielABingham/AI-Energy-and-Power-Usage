@@ -44,12 +44,12 @@ Open the terminal and then install any dependencies using:
 ```
 npm install
 ```
-Then, while still in the terminal you will want to  and run the web app by running this:
+Then, while still in the terminal you will want to run the web app by running this command:
 ```
 npm run dev
 ```
 
-You will want to create a .env file and enter your Gemini and ElevenLabs API keys
+You will want to create a .env file and enter your Gemini and ElevenLabs API keys in the file:
 ```
 VITE_GEMINI_API_KEY= # enter your Gemini API key here
 VITE_ELEVENLABS_API_KEY= # enter your ElevenLabs API key here
