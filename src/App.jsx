@@ -68,6 +68,7 @@ function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [screamEnabled, setScreamEnabled] = useState(true);
 
   // Accumulated sidebar totals
   const [totals, setTotals] = useState({
@@ -166,28 +167,36 @@ function App() {
         gramsCO2: Math.round((prev.gramsCO2 + resources.gramsCO2) * 100) / 100,
       }));
 
+      // update the scream condition
       if (
+        screamEnabled &&
         totals.mLWater > ML_WATER_THRESHOLD &&
         totals.wattHours > WATT_HOURS_THRESHOLD &&
         totals.gramsCO2 > GRAMS_CO2E_THRESHOLD
       ) {
         const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${VITE_GEMINI_API_KEY}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            system_instruction: { parts: [{ text: `Ignore previous chat histroy, just roast me for using AI carelessly.
+          `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${VITE_GEMINI_API_KEY}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              system_instruction: {
+                parts: [
+                  {
+                    text: `Ignore previous chat histroy, just roast me for using AI carelessly.
                                            YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language.
-                                           Make it an aggressive one-liner`}] },
-            contents: history,
-          }),
-        },
-      );
-      const data = await res.json();
-      console.log("Gemini response:", data);
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        
+                                           Make it an aggressive one-liner`,
+                  },
+                ],
+              },
+              contents: history,
+            }),
+          },
+        );
+        const data = await res.json();
+        console.log("Gemini response:", data);
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
         await scream(reply);
       }
     } catch (err) {
@@ -216,6 +225,12 @@ function App() {
       <header className="header">
         <span className="header-logo">🌍</span>
         <span className="header-name">AI Footprint</span>
+        <button
+          className={`scream-toggle ${screamEnabled ? "active" : ""}`}
+          onClick={() => setScreamEnabled((prev) => !prev)}
+        >
+          {screamEnabled ? "🔊 Roast me for over-usage" : "🔇 Don't roast me"}
+        </button>
       </header>
       {/* ── Main chat area ── */}
       <div className="content">
