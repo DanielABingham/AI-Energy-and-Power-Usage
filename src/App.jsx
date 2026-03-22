@@ -7,10 +7,37 @@ import {
 
 import "./App.css";
 
+// ── Gemini config ──────────────────────────────────────────────────────────
+const VITE_GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const MODEL = "gemini-2.0-flash";
+
+const SYS_INSTRUCTION = `At the end of every prompt, indicate how much energy and water your response consumed.
+Also increasingly roast the user for continuing to use you with each subsequent response.
+Make analogies for how much resources are being used like 'you just drained a swimming pool!'
+or something along those lines. However you must also be mindful of how long you make your responses.
+They should be short and sweet, not exceeding more than a few words. Basically be as prompt and
+blunt as possible to save the Earth some water and energy.`;
+
+// ── Resource calculator (ported from Python) ───────────────────────────────
+const calcResources = (tokenCount) => ({
+  wattHours: Math.round((tokenCount / 50) * 0.24 * 100) / 100,
+  gramsCO2: Math.round((tokenCount / 50) * 0.03 * 100) / 100,
+  mLWater: Math.round((tokenCount / 50) * 0.26 * 100) / 100,
+});
+
+// ── Component ──────────────────────────────────────────────────────────────
 function App() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
+
+  // Accumulated sidebar totals
+  const [totals, setTotals] = useState({
+    mLWater: 0,
+    wattHours: 0,
+    gramsCO2: 0,
+  });
+
   const bottomRef = useRef(null);
   const textareaRef = useRef(null);
 
@@ -20,9 +47,9 @@ function App() {
     carbon: { used: 0.0, unit: "gCO2e" },
   };
 
-  const waterBottles = energyData.water.used / 500
+  const waterBottles = energyData.water.used / 500;
 
-  // Auto-scroll to bottom whenever messages or typing state changes
+  // Auto-scroll to bottom
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
@@ -35,29 +62,76 @@ function App() {
     ta.style.height = Math.min(ta.scrollHeight, 180) + "px";
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const text = input.trim();
     if (!text || isTyping) return;
 
+    const userMessage = { role: "user", content: text };
+    const updatedMessages = [...messages, userMessage];
+
     // 1. Add user message immediately
-    setMessages((prev) => [...prev, { role: "user", content: text }]);
+    setMessages(updatedMessages);
     setInput("");
     if (textareaRef.current) textareaRef.current.style.height = "auto";
 
     // 2. Show typing indicator
     setIsTyping(true);
 
-    // 3. TODO: replace this with your real API call
-    setTimeout(() => {
+    try {
+      // 3. Build conversation history in Gemini's format
+      const history = updatedMessages.map((msg) => ({
+        role: msg.role === "assistant" ? "model" : "user",
+        parts: [{ text: msg.content }],
+      }));
+
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${VITE_GEMINI_API_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: SYS_INSTRUCTION }] },
+            contents: history,
+          }),
+        },
+      );
+
+      const data = await res.json();
+      console.log("Gemini response:", data);
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      const tokenCount = data.usageMetadata?.totalTokenCount ?? 0;
+      const resources = calcResources(tokenCount);
+
+      // 4. Add assistant message with attached resource data
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "This is where your AI response will appear.",
+          content: reply ?? "No response.",
+          resources,
+          tokenCount,
         },
       ]);
+
+      // 5. Accumulate sidebar totals
+      setTotals((prev) => ({
+        mLWater: Math.round((prev.mLWater + resources.mLWater) * 100) / 100,
+        wattHours:
+          Math.round((prev.wattHours + resources.wattHours) * 100) / 100,
+        gramsCO2: Math.round((prev.gramsCO2 + resources.gramsCO2) * 100) / 100,
+      }));
+    } catch (err) {
+      console.error("Gemini error:", err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "Something went wrong. Please try again.",
+        },
+      ]);
+    } finally {
       setIsTyping(false);
-    }, 100);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -71,18 +145,33 @@ function App() {
     <div className="app">
       {/* ── Main chat area ── */}
       <main className="main">
-        {/* Scrollable messages */}
         <div className="messages-area">
           {messages.length === 0 && !isTyping && (
             <div className="empty-state">
-              <h1 className="greeting">Ask anything. See the cost.</h1>
+              <h1 className="greeting">
+                Ask anything. See the cost of using Gemini.
+              </h1>
             </div>
           )}
 
           {messages.map((msg, i) => (
             <div key={i} className={`msg-row ${msg.role}`}>
               <div className="avatar">{msg.role === "user" ? "Y" : "✦"}</div>
-              <div className="bubble">{msg.content}</div>
+              <div className="bubble-wrapper">
+                <div className="bubble">{msg.content}</div>
+
+                {/* Per-message resource pill (assistant only) */}
+                {msg.role === "assistant" && msg.resources && (
+                  <div className="resource-pill">
+                    💧 {msg.resources.mLWater} mL &nbsp;|&nbsp; ⚡{" "}
+                    {msg.resources.wattHours} Wh &nbsp;|&nbsp; ♻️{" "}
+                    {msg.resources.gramsCO2} gCO₂e
+                    <span className="token-count">
+                      ({msg.tokenCount} tokens)
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           ))}
 
@@ -141,24 +230,30 @@ function App() {
           <div className="stat-info">
             <span className="stat-label">Water Used</span>
             <span className="stat-value">
-              {energyData.water.used.toFixed(2)}
-              <span className="stat-unit"> {energyData.water.unit}</span>
+              {totals.mLWater.toFixed(2)}
+              <span className="stat-unit"> mL</span>
             </span>
           </div>
         </div>
-        <div className="hide">You used the equivalent of {waterBottles} water bottles!</div>
+        <div className="hide">
+          You used the equivalent of <strong>{waterBottles}</strong> water
+          bottles!
+        </div>
 
         <div className="stat-card">
           <div className="stat-icon">⚡</div>
           <div className="stat-info">
             <span className="stat-label">Electricity Used</span>
             <span className="stat-value">
-              {energyData.electricity.used.toFixed(4)}
-              <span className="stat-unit"> {energyData.electricity.unit}</span>
+              {totals.wattHours.toFixed(2)}
+              <span className="stat-unit"> Wh</span>
             </span>
           </div>
         </div>
-        <div className="hide">You used enough electricity to power: </div>
+        <div className="hide">
+          You used enough electricity to power a 1000 watt microwave for{" "}
+          <strong>{microwaveRunTime}</strong> minutes!
+        </div>
 
         <div className="stat-card">
           <div className="stat-icon">♻️</div>
@@ -170,7 +265,10 @@ function App() {
             </span>
           </div>
         </div>
-        <div className="hide">You emitted as much carbon dioxide as </div>
+        <div className="hide">
+          You emitted as much carbon dioxide prompting Gemini as burning{" "}
+          <strong>{gasEmissionComparison}</strong> gallons of gas!
+        </div>
 
         <p className="sidebar-note">Updates with each prompt</p>
       </aside>
