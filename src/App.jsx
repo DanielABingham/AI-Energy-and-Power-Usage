@@ -179,7 +179,7 @@ function App() {
           body: JSON.stringify({
             system_instruction: { parts: [{ text: `Roast me for using AI carelessly.
                                            YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language.
-                                           Make it a aggressive one-liner`}] },
+                                           Make it an aggressive one-liner`}] },
             contents: history,
           }),
         },
