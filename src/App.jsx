@@ -1,10 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import {
-  getWaterComparison,
-  getElectricityComparison,
-  getCarbonComparison,
-} from "./utils/comparisons";
-
 import "./App.css";
 
 function App() {
@@ -20,7 +14,14 @@ function App() {
     carbon: { used: 0.0, unit: "gCO2e" },
   };
 
-  const waterBottles = energyData.water.used / 500
+  // Assuming a 500 mL water bottle
+  const waterBottles = energyData.water.used / 500;
+
+  // Assuming a 1000 watt microwave
+  const microwaveRunTime = energyData.electricity.used;
+
+  // Based on 8,887 grams of CO2/gallon of gasoline = 8.887 × 10-3 metric tons CO2/gallon of gasoline
+  const gasEmissionComparison = (energyData.carbon.used / 8887).toFixed(6);
 
   // Auto-scroll to bottom whenever messages or typing state changes
   useEffect(() => {
@@ -158,19 +159,21 @@ function App() {
             </span>
           </div>
         </div>
-        <div className="hide">You used enough electricity to power: </div>
+        <div className="hide">You used enough electricity to power
+          a 1000 watt microwave for {microwaveRunTime} minutes!</div>
 
         <div className="stat-card">
           <div className="stat-icon">♻️</div>
           <div className="stat-info">
             <span className="stat-label">Carbon Impact</span>
             <span className="stat-value">
-              {energyData.electricity.used.toFixed(2)}
+              {energyData.carbon.used.toFixed(2)}
               <span className="stat-unit"> {energyData.carbon.unit}</span>
             </span>
           </div>
         </div>
-        <div className="hide">You emitted as much carbon dioxide as </div>
+        <div className="hide">You emitted as much carbon dioxide prompting Gemini
+          as burning {gasEmissionComparison} gallons of gas!</div>
 
         <p className="sidebar-note">Updates with each prompt</p>
       </aside>
