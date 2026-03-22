@@ -13,7 +13,7 @@ We learned how to use the Gemini API and how to use the ElevenLabs API to create
 ## What's next for Sustainable AI Chatbot
 We want to try to get the latency for the ElevenLabs API call down as it takes 10-20 seconds before the voice starts speaking.
 ## How to run
-First you must clone the repo (enter your SSH passcode)
+First you must clone the repo
 ```
 git clone https://github.com/DanielABingham/I-Think-Therefore-I-Burn.git
 ```
