@@ -51,7 +51,7 @@ npm run dev
 
 You will want to create a .env file and enter your Gemini and ElevenLabs API keys
 ```
-VITE_GEMINI_API_KEY= # enter you API key here
-VITE_ELEVENLABS_API_KEY= # enter your API key here
+VITE_GEMINI_API_KEY= # enter your Gemini API key here
+VITE_ELEVENLABS_API_KEY= # enter your ElevenLabs API key here
 ```
 Now everything should work! Enjoy!
