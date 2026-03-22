@@ -5,12 +5,24 @@ import "./App.css";
 const VITE_GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const MODEL = "gemini-2.5-flash";
 
-const SYS_INSTRUCTION = `At the end of every prompt, indicate how much energy and water your response consumed.
+const SYS_INSTRUCTION = `You must be very mindful of how long you make your respones.
+Be as concise as possible to conserve water and energy. No more than a few words`;
+/*`At the end of every prompt, indicate how much energy and water your response consumed.
 Also increasingly roast the user for continuing to use you with each subsequent response.
 Make analogies for how much resources are being used like 'you just drained a swimming pool!'
 or something along those lines. However you must also be mindful of how long you make your responses.
 They should be short and sweet, not exceeding more than a few words. Basically be as prompt and
-blunt as possible to save the Earth some water and energy.`;
+blunt as possible to save the Earth some water and energy.`*/;
+
+// ── ElevenLabs Config ──────────────────────────────────────────────────────
+const ELEVENLABS_API_KEY = import.meta.env.ELEVENLABS_API;
+const VOICE_ID = "Pc6mkcSQXB2l3WmfeKVS"
+const VOICE_MODEL = "eleven_v3"
+/*
+WATT_HOURS_THRESHOLD = 10
+GRAMS_CO2E_THRESHOLD = 10
+ML_WATER_THRESHOLD = 10
+*/
 
 // ── Resource calculator (ported from Python) ───────────────────────────────
 const calcResources = (tokenCount) => ({
@@ -36,13 +48,17 @@ function App() {
   const textareaRef = useRef(null);
 
   // Assuming a 500 mL water bottle
-  const waterBottles = totals.mLWater / 500;
+  //const waterBottles = totals.mLWater / 500;
+  const waterBottles = Math.round((totals.mLWater / 500) * 1000) / 1000;
 
   // Assuming a 1000 watt microwave
-  const microwaveRunTime = (totals.wattHours / 1000) * 60;
+  //const microwaveRunTime = (totals.wattHours / 1000) * 60;
+  const microwaveRunTime = Math.round(((totals.wattHours / 1000) * 60) * 1000) / 1000;
 
   // Based on 8,887 grams of CO2/gallon of gasoline = 8.887 × 10-3 metric tons CO2/gallon of gasoline
-  const gasEmissionComparison = totals.gramsCO2 / 8887;
+  //const gasEmissionComparison = totals.gramsCO2 / 8887;
+  // Alt, average passenger vehicle produces ~400 grams C02 per mile (https://www.epa.gov/greenvehicles/greenhouse-gas-emissions-typical-passenger-vehicle)
+  const gasEmissionComparison = Math.round((totals.gramsCO2 / 400) * 1000) / 1000;
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -261,8 +277,8 @@ function App() {
           </div>
         </div>
         <div className="hide">
-          You emitted as much carbon dioxide prompting Gemini as burning{" "}
-          <strong>{gasEmissionComparison}</strong> gallon(s) of gas!
+          You emitted as much greenhouse gas as driving{" "}
+          <strong>{gasEmissionComparison}</strong> mile(s)!
         </div>
 
         <p className="sidebar-note">Updates with each prompt</p>
@@ -272,3 +288,6 @@ function App() {
 }
 
 export default App;
+
+// You emitted as much carbon dioxide prompting Gemini as burning{" "}
+// <strong>{gasEmissionComparison}</strong> gallon(s) of gas!
