@@ -3,6 +3,7 @@ from google.genai import types
 from dotenv import load_dotenv
 import os
 load_dotenv()
+
 # Initialize Gemini client #
 client = genai.Client(api_key = os.environ.get("GEMINI_API"))
 MODEL_ID = "gemini-3-flash-preview"
@@ -13,7 +14,19 @@ SYS_INSTRUCTION = ("At the end of every prompt, indicate how much energy and wat
                    "They should be short and sweet, not exceeding more than a few words. Basically be as prompt and"
                    "blunt as possible to save the Earth some water and energy.")
 
-def get_response(prompt):
+# Resource use constants #
+# source: https://arxiv.org/pdf/2508.15734
+WATT_HOURS_PER_PROMPT = 0.24
+GRAMS_CO2E_PER_PROMPT = 0.03
+ML_WATER_PER_PROMPT = 0.26
+AVG_TOKENS_PER_PROMPT = 50
+
+
+def get_response(prompt: str) -> tuple[str, int]:
+    """
+    Takes in user prompt and generates respomse
+    Returns response text and total tokens used
+    """
     response = client.models.generate_content(
         model = MODEL_ID,
         contents = prompt,
@@ -23,17 +36,15 @@ def get_response(prompt):
     )
     return response.text, response.usage_metadata.total_token_count
 
-def calc_resources(token_count):
+def calc_resources(token_count: int) -> tuple[int, int, int]:
     """
-    Assume avg 50 tokens
-    Energy (Wh/prompt) 0.24
-    Emissions (gCO2e/prompt) 0.03
-        greenhouse CO2 equivalent / prompt = gCO2e / Wh
-    Water (mL/prompt) 0.26
+    Assuming average 50 tokens per prompt, calculate energy, co2e, and water usage
+    Round calculations to 2 decimal places
     """
-    watt_hours_used = round((token_count/50) * 0.24, 2)
-    grams_CO2e_used = round((token_count/50) * 0.03, 2)
-    mL_water_used = round((token_count/50) * 0.26, 2)
+    prompt_scale = token_count/AVG_TOKENS_PER_PROMPT
+    watt_hours_used = round(prompt_scale * WATT_HOURS_PER_PROMPT, 2)
+    grams_CO2e_used = round(prompt_scale * GRAMS_CO2E_PER_PROMPT, 2)
+    mL_water_used = round(prompt_scale * ML_WATER_PER_PROMPT, 2)
     return watt_hours_used, grams_CO2e_used, mL_water_used
     
 
