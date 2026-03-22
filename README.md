@@ -14,9 +14,14 @@ We learned how to use the Gemini API and how to use the ElevenLabs API to create
 We want to try to get the latency for the ElevenLabs API call down as it takes 10-20 seconds before the voice starts speaking.
 ## How to run
 First you must clone the repo (enter your SSH passcode)
-`git clone git@github.com:DanielABingham/I-Think-Therefore-I-Burn.git`
+```
+git clone git@github.com:DanielABingham/I-Think-Therefore-I-Burn.git
+```
 Next, you will want to open the project in a code editor or IDE
-Then, you will want to open the terminal and run the web app using `npm run dev`
+Then, you will want to open the terminal and run the web app using 
+```
+npm run dev
+```
 You will want to create a .env file and enter your Gemini and ElevenLabs API keys
 ```
 VITE_GEMINI_API_KEY= // enter you API key here
