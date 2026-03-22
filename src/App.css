@@ -189,7 +189,7 @@ body {
 }
 
 .input-box:focus-within {
-  border-color: #2563eb;
+  border-color: #00661f;
 }
 
 .chat-input {

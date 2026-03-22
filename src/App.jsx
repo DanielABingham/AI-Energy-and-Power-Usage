@@ -67,7 +67,7 @@ function App() {
         <div className="messages-area">
           {messages.length === 0 && !isTyping && (
             <div className="empty-state">
-              <h1 className="greeting">What can I help with?</h1>
+              <h1 className="greeting">Ask anything. See the cost.</h1>
             </div>
           )}
 
