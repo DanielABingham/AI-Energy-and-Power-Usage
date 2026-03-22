@@ -1,9 +1,29 @@
 ## Inspiration
 We are getting tired of every piece of software seemingly having some sort of AI integrated so we wanted to show the **REAL** resource impact of **YOUR** prompts and actions. Gemini's responses are also factored in our calculations so you feel bad which is further accented by a Samuel L. Jackson voice who criticizes you for using AI unnecessarily.
 ## What it does
-Our AI chatbot answers your questions in as **FEW** words as possible with a dashboard to the right showing your **TOTAL** resource (water, energy, carbon) usage. Gemini also shows a per prompt resource usage. Also, an ElevenLabs Samuel L. Jackson like voice criticizes you in a disappointed voice for your resource usage.
+This project is an AI chatbot that answers questions in as **few words as possible**. Alongside the chat interface, a dashboard displays your **total** estimated resource usage, including:
+
+- Water
+- Energy
+- Carbon emissions
+
+In addition, an ElevenLabs Samuel L. Jackson like voice criticizes you in a disappointed voice for your resource usage.
+
+
 ## How we built it
-We used **Vite** for a quick set up and **React** (Javascript XML), **CSS**, **Python**, and a little bit of **HTML** to create the web app. We use the Gemini API to get responses to the user's prompts and ElevenLabs API to "*scream*" a line at the you the user, criticizing you for your environmental impact. We referenced this technical report from Google for our resource calculations: [Measuring the environmental impact of delivering AI at Google Scale](https://arxiv.org/abs/2508.15734).
+We built the web app using:
+
+- **Vite** for fast project setup and development
+- **React** for the frontend
+- **CSS** for styling
+- **Python** for supporting logic
+- A small amount of **HTML**
+
+We use the **Gemini API** to generate chatbot responses and the **ElevenLabs API** to generate voice lines that criticize the user’s resource usage.
+
+For our environmental impact estimates, we referenced Google’s technical report:  
+[Measuring the environmental impact of delivering AI at Google Scale](https://arxiv.org/abs/2508.15734)
+
 ## Challenges we ran into
 We had some trouble connecting the Gemini API to our React logic and we similarly had some trouble connecting the ElevenLabs API to our React logic. Fixing our web app's formatting also took some effort.
 ## Accomplishments that we're proud of
