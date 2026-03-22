@@ -177,7 +177,7 @@ function App() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            system_instruction: { parts: [{ text: `Roast me for using AI carelessly.
+            system_instruction: { parts: [{ text: `Ignore previous chat histroy, just roast me for using AI carelessly.
                                            YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language.
                                            Make it an aggressive one-liner`}] },
             contents: history,
