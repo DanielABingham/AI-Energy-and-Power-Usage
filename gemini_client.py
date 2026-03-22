@@ -36,7 +36,7 @@ def get_response(prompt: str) -> tuple[str, int]:
     )
     return response.text, response.usage_metadata.total_token_count
 
-def calc_resources(token_count: int) -> tuple[int, int, int]:
+def calc_resources(token_count: int) -> tuple[float, float, float]:
     """
     Assuming average 50 tokens per prompt, calculate energy, co2e, and water usage
     Round calculations to 2 decimal places
