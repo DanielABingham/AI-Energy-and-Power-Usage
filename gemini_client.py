@@ -11,8 +11,6 @@ SYS_INSTRUCTION = ("At the end of every prompt, indicate how must energy and wat
                    "or something along those lines. However you must also be mindful of how long you make your responses"
                    "They should be short and sweet, not exceeding more than a few words. Basically be as prompt and"
                    "blunt as possible to save the Earth some water and energy.")
-# At the
-
 
 def get_response(prompt):
     response = client.models.generate_content(
@@ -32,15 +30,16 @@ def calc_water_energy(token_count):
         greenhouse CO2 equivalent / prompt = gCO2e / Wh
     Water (mL/prompt) 0.26
     """
-    watt_hours_used = (token_count/50) * 0.24
-    grams_CO2e_used = (token_count/50) * 0.03
-    mL_water_used = (token_count/50) * 0.26
+    watt_hours_used = round((token_count/50) * 0.24, 2)
+    grams_CO2e_used = round((token_count/50) * 0.03, 2)
+    mL_water_used = round((token_count/50) * 0.26, 2)
     return watt_hours_used, grams_CO2e_used, mL_water_used
     
 
 resp = get_response("Explain AI in a few words")
 print(resp[0])
 resrc_used = calc_water_energy(resp[1])
-print(f"You used {resrc_used[0]} watt-hours,"
-      f"{resrc_used[1]} grams of CO2 or its equivalents, "
-      f"and {resrc_used[2]} mL of water")
+print(f"You used {resp[1]} tokens for this response. This equates to:\n"
+    f"\t{resrc_used[0]} watt-hours,\n"
+    f"\t{resrc_used[1]} grams of CO2 or its equivalents,\n"
+    f"\tand {resrc_used[2]} mL of water")
