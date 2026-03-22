@@ -1,7 +1,8 @@
 from google import genai
 from google.genai import types
+from dotenv import load_dotenv
 import os
-
+load_dotenv()
 # Initialize Gemini client #
 client = genai.Client(api_key = os.environ.get("GEMINI_API"))
 MODEL_ID = "gemini-3-flash-preview"
