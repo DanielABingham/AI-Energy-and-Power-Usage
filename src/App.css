@@ -17,6 +17,7 @@ body {
   display: flex;
   flex-direction: row;
   height: 100vh;
+  width: 87vw; /* Make the chat window bigger */
 }
 
 /* ── Main: flex column so messages grow and input stays pinned ── */
