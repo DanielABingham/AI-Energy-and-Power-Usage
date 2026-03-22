@@ -17,7 +17,6 @@ body {
   display: flex;
   flex-direction: row;
   height: 100vh;
-  display: flex;
   justify-content: center;
 }
 
@@ -280,6 +279,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  justify-content: center; /* Make sure Stat Card elements are centered */
 }
 
 /* Add a cool hover effect to each stat card */
