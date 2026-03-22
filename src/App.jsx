@@ -179,8 +179,7 @@ function App() {
           body: JSON.stringify({
             system_instruction: { parts: [{ text: `Roast me for using AI carelessly.
                                            YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language.
-                                           In total, I've used ${totals.wattHours} watt-hours of energy, generated ${totals.gramsCO2} grams of CO2 or equivalent, and wasted ${totals.mLWater} milliliters of water."
-                                           Keep it between one and three sentences`}] },
+                                           Make it a aggressive one-liner`}] },
             contents: history,
           }),
         },
