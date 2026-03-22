@@ -23,7 +23,7 @@ def get_response(prompt):
     )
     return response.text, response.usage_metadata.total_token_count
 
-def calc_water_energy(token_count):
+def calc_resources(token_count):
     """
     Assume avg 50 tokens
     Energy (Wh/prompt) 0.24
@@ -39,7 +39,7 @@ def calc_water_energy(token_count):
 
 resp = get_response("Explain AI in a few words")
 print(resp[0])
-resrc_used = calc_water_energy(resp[1])
+resrc_used = calc_resources(resp[1])
 print(f"You used {resp[1]} tokens for this response. This equates to:\n"
     f"\t{resrc_used[0]} watt-hours,\n"
     f"\t{resrc_used[1]} grams of CO2 or its equivalents,\n"
