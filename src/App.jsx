@@ -8,10 +8,10 @@ const MODEL = "gemini-2.5-flash";
 
 const SYS_INSTRUCTION = `You must be very mindful of how long you make your respones.
 Be as concise as possible to conserve water and energy. No more than a few words`;
-  
+
 //"Roast me for using AI carelessly. Make analogies to shame the user." +
-  //"YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language." +
-  //"In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and wasted {curr_water} milliliters of water.";
+//"YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language." +
+//"In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and wasted {curr_water} milliliters of water.";
 /*`At the end of every prompt, indicate how much energy and water your response consumed.
 Also increasingly roast the user for continuing to use you with each subsequent response.
 Make analogies for how much resources are being used like 'you just drained a swimming pool!'
@@ -213,148 +213,163 @@ function App() {
 
   return (
     <div className="app">
+      <header className="header">
+        <span className="header-logo">🌍</span>
+        <span className="header-name">AI Footprint</span>
+      </header>
       {/* ── Main chat area ── */}
-      <main className="main">
-        <div className="messages-area">
-          {messages.length === 0 && !isTyping && (
-            <div className="empty-state">
-              <h1 className="greeting">
-                Ask anything. See the cost of using Gemini.
-              </h1>
-            </div>
-          )}
-
-          {messages.map((msg, i) => (
-            <div key={i} className={`msg-row ${msg.role}`}>
-              <div className="avatar">{msg.role === "user" ? "Y" : "✦"}</div>
-              <div className="bubble-wrapper">
-                <div className="bubble">{msg.content}</div>
-
-                {/* Per-message resource pill (assistant only) */}
-                {msg.role === "assistant" && msg.resources && (
-                  <div className="resource-pill">
-                    💧 {msg.resources.mLWater} mL &nbsp;|&nbsp; ⚡{" "}
-                    {msg.resources.wattHours} Wh &nbsp;|&nbsp; ♻️{" "}
-                    {msg.resources.gramsCO2} gCO₂e
-                    <span className="token-count">
-                      ({msg.tokenCount} tokens)
-                    </span>
-                  </div>
-                )}
+      <div className="content">
+        <main className="main">
+          <div className="messages-area">
+            {messages.length === 0 && !isTyping && (
+              <div className="empty-state">
+                <h1 className="greeting">
+                  Ask anything. See the cost of using Gemini.
+                </h1>
               </div>
-            </div>
-          ))}
+            )}
 
-          {isTyping && (
-            <div className="msg-row assistant">
-              <div className="avatar">✦</div>
-              <div className="bubble">
-                <div className="typing">
-                  <span />
-                  <span />
-                  <span />
+            {messages.map((msg, i) => (
+              <div key={i} className={`msg-row ${msg.role}`}>
+                <div className="avatar">{msg.role === "user" ? "Y" : "✦"}</div>
+                <div className="bubble-wrapper">
+                  <div className="bubble">{msg.content}</div>
+
+                  {/* Per-message resource pill (assistant only) */}
+                  {msg.role === "assistant" && msg.resources && (
+                    <div className="resource-pill">
+                      💧 {msg.resources.mLWater} mL &nbsp;|&nbsp; ⚡{" "}
+                      {msg.resources.wattHours} Wh &nbsp;|&nbsp; ♻️{" "}
+                      {msg.resources.gramsCO2} gCO₂e
+                      <span className="token-count">
+                        ({msg.tokenCount} tokens)
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-          )}
+            ))}
 
-          <div ref={bottomRef} />
-        </div>
+            {isTyping && (
+              <div className="msg-row assistant">
+                <div className="avatar">✦</div>
+                <div className="bubble">
+                  <div className="typing">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                </div>
+              </div>
+            )}
 
-        {/* Pinned input bar */}
-        <div className="input-bar">
-          <div className="input-box">
-            <textarea
-              ref={textareaRef}
-              rows={1}
-              className="chat-input"
-              placeholder="Message AI..."
-              value={input}
-              onChange={(e) => {
-                setInput(e.target.value);
-                autoResize();
-              }}
-              onKeyDown={handleKeyDown}
-            />
-            <button
-              className="submit-btn"
-              onClick={handleSubmit}
-              disabled={!input.trim() || isTyping}
-            >
-              ↑
-            </button>
+            <div ref={bottomRef} />
           </div>
-          <p className="input-hint">
-            Press enter/return to send your message (Press shift key +
-            enter/return key to go to a new line)
-          </p>
-        </div>
-      </main>
 
-      {/* ── Sidebar ── */}
-      <aside className="sidebar">
-        <h2 className="sidebar-title">Total Resource Usage</h2>
+          {/* Pinned input bar */}
+          <div className="input-bar">
+            <div className="input-box">
+              <textarea
+                ref={textareaRef}
+                rows={1}
+                className="chat-input"
+                placeholder="Message AI..."
+                value={input}
+                onChange={(e) => {
+                  setInput(e.target.value);
+                  autoResize();
+                }}
+                onKeyDown={handleKeyDown}
+              />
+              <button
+                className="submit-btn"
+                onClick={handleSubmit}
+                disabled={!input.trim() || isTyping}
+              >
+                ↑
+              </button>
+            </div>
+            <p className="input-hint">
+              Press enter/return to send your message (Press shift key +
+              enter/return key to go to a new line)
+            </p>
+          </div>
+        </main>
 
-        <div className="stat-card">
-          <div className="stat-icon">💧</div>
-          <div className="stat-info">
-            <span className="stat-label">Water Used</span>
-            {/* <span className="stat-value">
+        {/* ── Sidebar ── */}
+        <aside className="sidebar">
+          <h2 className="sidebar-title">Total Resource Usage</h2>
+
+          <div className="stat-card">
+            <div className="stat-icon">💧</div>
+            <div className="stat-info">
+              <span className="stat-label">Water Used</span>
+              {/* <span className="stat-value">
               {totals.mLWater.toFixed(2)}
               <span className="stat-unit"> mL</span>
             </span> */}
-            <span className="stat-value">
-              <NumberFlow
-                value={totals.mLWater}
-                format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
-              />
-              <span className="stat-unit"> mL</span>
-            </span>
+              <span className="stat-value">
+                <NumberFlow
+                  value={totals.mLWater}
+                  format={{
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }}
+                />
+                <span className="stat-unit"> mL</span>
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="hide">
-          You used the equivalent of <strong>{waterBottles}</strong> water
-          bottle(s)!
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon">⚡</div>
-          <div className="stat-info">
-            <span className="stat-label">Electricity Used</span>
-            <span className="stat-value">
-              <NumberFlow
-                value={totals.wattHours}
-                format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
-              />
-              <span className="stat-unit"> Wh</span>
-            </span>
+          <div className="hide">
+            You used the equivalent of <strong>{waterBottles}</strong> water
+            bottle(s)!
           </div>
-        </div>
-        <div className="hide">
-          You used enough electricity to power a 1000 watt microwave for{" "}
-          <strong>{microwaveRunTime}</strong> minute(s)!
-        </div>
 
-        <div className="stat-card">
-          <div className="stat-icon">♻️</div>
-          <div className="stat-info">
-            <span className="stat-label">Carbon Impact</span>
-            <span className="stat-value">
-              <NumberFlow
-                value={totals.gramsCO2}
-                format={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
-              />
-              <span className="stat-unit"> gCO₂e</span>
-            </span>
+          <div className="stat-card">
+            <div className="stat-icon">⚡</div>
+            <div className="stat-info">
+              <span className="stat-label">Electricity Used</span>
+              <span className="stat-value">
+                <NumberFlow
+                  value={totals.wattHours}
+                  format={{
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }}
+                />
+                <span className="stat-unit"> Wh</span>
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="hide">
-          You emitted as much greenhouse gas as driving{" "}
-          <strong>{gasEmissionComparison}</strong> mile(s)!
-        </div>
+          <div className="hide">
+            You used enough electricity to power a 1000 watt microwave for{" "}
+            <strong>{microwaveRunTime}</strong> minute(s)!
+          </div>
 
-        <p className="sidebar-note">Updates with each prompt</p>
-      </aside>
+          <div className="stat-card">
+            <div className="stat-icon">♻️</div>
+            <div className="stat-info">
+              <span className="stat-label">Carbon Impact</span>
+              <span className="stat-value">
+                <NumberFlow
+                  value={totals.gramsCO2}
+                  format={{
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }}
+                />
+                <span className="stat-unit"> gCO₂e</span>
+              </span>
+            </div>
+          </div>
+          <div className="hide">
+            You emitted as much greenhouse gas as driving{" "}
+            <strong>{gasEmissionComparison}</strong> mile(s)!
+          </div>
+
+          <p className="sidebar-note">Updates with each prompt</p>
+        </aside>
+      </div>
     </div>
   );
 }
