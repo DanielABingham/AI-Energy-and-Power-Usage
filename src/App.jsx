@@ -42,7 +42,7 @@ function App() {
   const microwaveRunTime = (totals.wattHours / 1000) * 60;
 
   // Based on 8,887 grams of CO2/gallon of gasoline = 8.887 × 10-3 metric tons CO2/gallon of gasoline
-  const gasEmissionComparison = (totals.gramsCO2 / 8887).toFixed(6);
+  const gasEmissionComparison = totals.gramsCO2 / 8887;
 
   // Auto-scroll to bottom
   useEffect(() => {
