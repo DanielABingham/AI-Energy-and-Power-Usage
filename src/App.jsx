@@ -229,7 +229,7 @@ function App() {
           className={`scream-toggle ${screamEnabled ? "active" : ""}`}
           onClick={() => setScreamEnabled((prev) => !prev)}
         >
-          {screamEnabled ? "🔊 Roast me for over-usage" : "🔇 Don't roast me"}
+          {screamEnabled ? "🔇 Stop roasting me" : "🔊 Roast me for over-usage"}
         </button>
       </header>
       {/* ── Main chat area ── */}
