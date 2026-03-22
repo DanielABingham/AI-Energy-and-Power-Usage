@@ -224,7 +224,7 @@ function App() {
     <div className="app">
       <header className="header">
         <span className="header-logo">🌍</span>
-        <span className="header-name">AI Footprint</span>
+        <span className="header-name">I Think, Therefore I Burn</span>
         <button
           className={`scream-toggle ${screamEnabled ? "active" : ""}`}
           onClick={() => setScreamEnabled((prev) => !prev)}
