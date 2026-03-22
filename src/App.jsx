@@ -9,7 +9,7 @@ function App() {
   const textareaRef = useRef(null);
 
   const energyData = {
-    water: { used: 0.0, unit: "liters" },
+    water: { used: 0.0, unit: "mL" },
     electricity: { used: 0.0, unit: "kWh" },
     carbon: { used: 0.0, unit: "gCO2e"}
   };
