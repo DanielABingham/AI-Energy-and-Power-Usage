@@ -6,13 +6,8 @@ load_dotenv()
 
 # Initialize Gemini client #
 client = genai.Client(api_key = os.environ.get("VITE_GEMINI_API_KEY"))
-MODEL_ID = "gemini-3-flash-preview"
-SYS_INSTRUCTION = ("At the end of every prompt, indicate how much energy and water your response consumed."
-                   "Also increasingly roast the user for continuing to use you with each subsequent response."
-                   "Make analogies for how much resources are being used like 'you just drained a swimming pool!' "
-                   "or something along those lines. However you must also be mindful of how long you make your responses"
-                   "They should be short and sweet, not exceeding more than a few words. Basically be as prompt and"
-                   "blunt as possible to save the Earth some water and energy.")
+MODEL_ID = "gemini-2.5-flash"
+SYS_INSTRUCTION = ("Response should be short yet informative. Be as concise as possible to conserve water and energy.")
 
 # Resource use constants #
 # source: https://arxiv.org/pdf/2508.15734
