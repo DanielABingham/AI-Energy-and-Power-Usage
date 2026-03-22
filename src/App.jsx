@@ -76,7 +76,7 @@ function App() {
         <div className="messages-area">
           {messages.length === 0 && !isTyping && (
             <div className="empty-state">
-              <h1 className="greeting">Ask anything. See the cost.</h1>
+              <h1 className="greeting">Ask anything. See the cost of using Gemini.</h1>
             </div>
           )}
 
@@ -147,7 +147,7 @@ function App() {
             </span>
           </div>
         </div>
-        <div className="hide">You used the equivalent of {waterBottles} water bottles!</div>
+        <div className="hide">You used the equivalent of <strong>{waterBottles}</strong> water bottles!</div>
 
         <div className="stat-card">
           <div className="stat-icon">⚡</div>
@@ -160,7 +160,7 @@ function App() {
           </div>
         </div>
         <div className="hide">You used enough electricity to power
-          a 1000 watt microwave for {microwaveRunTime} minutes!</div>
+          a 1000 watt microwave for <strong>{microwaveRunTime}</strong> minutes!</div>
 
         <div className="stat-card">
           <div className="stat-icon">♻️</div>
@@ -173,7 +173,7 @@ function App() {
           </div>
         </div>
         <div className="hide">You emitted as much carbon dioxide prompting Gemini
-          as burning {gasEmissionComparison} gallons of gas!</div>
+          as burning <strong>{gasEmissionComparison}</strong> gallons of gas!</div>
 
         <p className="sidebar-note">Updates with each prompt</p>
       </aside>
