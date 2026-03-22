@@ -9,8 +9,9 @@ function App() {
   const textareaRef = useRef(null);
 
   const energyData = {
-    water: { used: 0.0, unit: "liters" },
+    water: { used: 0.0, unit: "mL" },
     electricity: { used: 0.0, unit: "kWh" },
+    carbon: { used: 0.0, unit: "gCO2e"}
   };
 
   // Auto-scroll to bottom whenever messages or typing state changes
@@ -66,7 +67,7 @@ function App() {
         <div className="messages-area">
           {messages.length === 0 && !isTyping && (
             <div className="empty-state">
-              <h1 className="greeting">What can I help with?</h1>
+              <h1 className="greeting">Ask anything. See the cost.</h1>
             </div>
           )}
 
@@ -142,6 +143,17 @@ function App() {
             <span className="stat-value">
               {energyData.electricity.used.toFixed(4)}
               <span className="stat-unit"> {energyData.electricity.unit}</span>
+            </span>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">♻️</div>
+          <div className="stat-info">
+            <span className="stat-label">Carbon Impact</span>
+            <span className="stat-value">
+              {energyData.electricity.used.toFixed(2)}
+              <span className="stat-unit"> {energyData.carbon.unit}</span>
             </span>
           </div>
         </div>

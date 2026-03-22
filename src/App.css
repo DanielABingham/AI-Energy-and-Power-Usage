@@ -17,6 +17,8 @@ body {
   display: flex;
   flex-direction: row;
   height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
 /* ── Main: flex column so messages grow and input stays pinned ── */
@@ -173,6 +175,7 @@ body {
   padding: 12px 24px 20px;
   border-top: 1px solid #1f1f1f;
   flex-shrink: 0;
+  width: 100%;
 }
 
 .input-box {
@@ -188,7 +191,7 @@ body {
 }
 
 .input-box:focus-within {
-  border-color: #2563eb;
+  border-color: #00661f;
 }
 
 .chat-input {
@@ -303,7 +306,7 @@ body {
 }
 
 .stat-unit {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #d5d4d4;
 }
 
