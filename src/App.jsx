@@ -171,9 +171,25 @@ function App() {
         totals.wattHours > WATT_HOURS_THRESHOLD &&
         totals.gramsCO2 > GRAMS_CO2E_THRESHOLD
       ) {
-        await scream((`Roast me for using AI carelessly. Make analogies to shame the user.
-                        YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language.
-                        In total, I've used ${totals.mLWater} watt-hours of energy, generated ${totals.wattHours} grams of CO2 or equivalent, and wasted ${totals.gramsCO2} milliliters of water.`));
+        const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${VITE_GEMINI_API_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: `Roast me for using AI carelessly.
+                                           YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language.
+                                           In total, I've used ${totals.wattHours} watt-hours of energy, generated ${totals.gramsCO2} grams of CO2 or equivalent, and wasted ${totals.mLWater} milliliters of water."
+                                           Keep it between one and three sentences`}] },
+            contents: history,
+          }),
+        },
+      );
+      const data = await res.json();
+      console.log("Gemini response:", data);
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        
+        await scream(reply);
       }
     } catch (err) {
       console.error("Gemini error:", err);
