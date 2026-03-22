@@ -9,7 +9,7 @@ import gemini_client
 elevenlabs = ElevenLabs(
     api_key = os.environ.get("ELEVENLABS_API"),
 )
-VOICE_ID = "dgkKQcJqyy5AP0dqleUU"
+VOICE_ID = "Pc6mkcSQXB2l3WmfeKVS"
 VOICE_MODEL = "eleven_v3"
 
 
@@ -24,12 +24,13 @@ def scream(prompt):
 
 def check_currant_use(curr_wh, curr_co2, curr_water):
     if curr_wh > 5 or curr_co2 > 5 or curr_water > 5:
-        roast = gemini_client.get_response(f"Roast me for using {curr_wh} watt-hours, generating {curr_co2} grams of CO2 or equivalent, and using {curr_water} milliliter of water for AI use."
-                                           f"Make analogies with the information to shame the user into better habits")
+        roast = gemini_client.get_response(f"Roast me for using AI carelressly. Make analogies to shame the user."
+                                           f"In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and waster {curr_water} milliliter of water."
+                                           f"YELL ANGIRLY for your entire response. Pretend you are Samuel L Jackson")
         scream(roast[0])
 
 
-check_currant_use(100, 100, 100)
+check_currant_use(1000, 1000, 1000)
 
 '''
 "At the end of every prompt, indicate how much energy and water your response consumed."
