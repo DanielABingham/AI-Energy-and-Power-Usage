@@ -5,27 +5,30 @@ import "./App.css";
 const VITE_GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const MODEL = "gemini-2.5-flash";
 
-const SYS_INSTRUCTION = `You must be very mindful of how long you make your respones.
-Be as concise as possible to conserve water and energy. No more than a few words`;
+const SYS_INSTRUCTION = "Roast me for using AI carelessly. Make analogies to shame the user."
++ "YELL ANGRILY for your entire response. Pretend you are Samuel L. Jackson. Use rated-R insults but with PG-13 language."
++ "In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and wasted {curr_water} milliliters of water.";
 /*`At the end of every prompt, indicate how much energy and water your response consumed.
 Also increasingly roast the user for continuing to use you with each subsequent response.
 Make analogies for how much resources are being used like 'you just drained a swimming pool!'
 or something along those lines. However you must also be mindful of how long you make your responses.
 They should be short and sweet, not exceeding more than a few words. Basically be as prompt and
-blunt as possible to save the Earth some water and energy.`*/;
+blunt as possible to save the Earth some water and energy.`*/
 
 // ── ElevenLabs Config ──────────────────────────────────────────────────────
 const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY;
 const VOICE_ID = "Pc6mkcSQXB2l3WmfeKVS"
 const VOICE_MODEL = "eleven_v3"
-/*
-WATT_HOURS_THRESHOLD = 10
-GRAMS_CO2E_THRESHOLD = 10
-ML_WATER_THRESHOLD = 10
-*/
+
+const WATT_HOURS_THRESHOLD = 0.01
+const GRAMS_CO2E_THRESHOLD = 0.01
+const ML_WATER_THRESHOLD = 0.01
+
 /*
 CODE WORKS USE THIS
-const response = await fetch(
+*/
+async function scream(prompt) {
+  const response = await fetch(
   `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
   {
     method: 'POST',
@@ -34,16 +37,21 @@ const response = await fetch(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      text: 'Hello, world!',
-      model_id: 'eleven_turbo_v2',
+      text: prompt,
+      model_id: VOICE_MODEL,
     }),
   }
 );
-const audioBlob = await response.blob();
-const audioUrl = URL.createObjectURL(audioBlob);
-const audio = new Audio(audioUrl);
-await audio.play();
-*/
+  if (!response.ok) {
+  console.error("TTS failed!", await response.text());
+  return
+}
+  const audioBlob = await response.blob();
+  const audioUrl = URL.createObjectURL(audioBlob);
+  const audio = new Audio(audioUrl);
+  await audio.play();
+}
+
 
 // ── Resource calculator (ported from Python) ───────────────────────────────
 const calcResources = (tokenCount) => ({
@@ -152,6 +160,12 @@ function App() {
           Math.round((prev.wattHours + resources.wattHours) * 100) / 100,
         gramsCO2: Math.round((prev.gramsCO2 + resources.gramsCO2) * 100) / 100,
       }));
+
+      if (totals.mLWater > ML_WATER_THRESHOLD &&
+          totals.wattHours > WATT_HOURS_THRESHOLD &&
+          totals.gramsCO2 > GRAMS_CO2E_THRESHOLD) {
+        await scream(reply)
+      }
     } catch (err) {
       console.error("Gemini error:", err);
       setMessages((prev) => [

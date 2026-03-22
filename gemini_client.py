@@ -7,7 +7,7 @@ load_dotenv()
 # Initialize Gemini client #
 client = genai.Client(api_key = os.environ.get("VITE_GEMINI_API_KEY"))
 MODEL_ID = "gemini-2.5-flash"
-SYS_INSTRUCTION = ("Response should be short yet informative. Be as concise as possible to conserve water and energy.")
+SYS_INSTRUCTION = "Response should be short yet informative. Be as concise as possible to conserve water and energy."
 
 # Resource use constants #
 # source: https://arxiv.org/pdf/2508.15734
@@ -19,7 +19,7 @@ AVG_TOKENS_PER_PROMPT = 50
 
 def get_response(prompt: str) -> tuple[str, int]:
     """
-    Takes in user prompt and generates respomse
+    Takes in user prompt and generates response
     Returns response text and total tokens used
     """
     response = client.models.generate_content(
