@@ -29,8 +29,8 @@ def scream(prompt):
 def check_currant_use(curr_wh, curr_co2, curr_water):
     if curr_wh > WATT_HOURS_THRESHOLD or curr_co2 > GRAMS_CO2E_THRESHOLD or curr_water > ML_WATER_THRESHOLD:
         roast = gemini_client.get_response(f"Roast me for using AI carelressly. Make analogies to shame the user."
-                                           f"In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and waster {curr_water} milliliter of water."
-                                           f"YELL ANGIRLY for your entire response. Pretend you are Samuel L Jackson")
+                                           f"YELL ANGIRLY for your entire response. Pretend you are Samuel L Jackson. Use rated R insults but with PG-13 language."
+                                           f"In total, I've used {curr_wh} watt-hours of energy, generated {curr_co2} grams of CO2 or equivalent, and wasted {curr_water} milliliters of water.")
         scream(roast[0])
 
-check_currant_use(1000, 1000, 1000)
+check_currant_use(500, 500, 500)
