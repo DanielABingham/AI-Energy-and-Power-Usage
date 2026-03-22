@@ -2,17 +2,19 @@ from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
 from elevenlabs.play import play
 import os
-
 load_dotenv()
 
 elevenlabs = ElevenLabs(
-  api_key=os.environ.get("ELEVENLABS_API"),
+  api_key = os.environ.get("ELEVENLABS_API"),
 )
+VOICE_ID = "dgkKQcJqyy5AP0dqleUU"
+VOICE_MODEL = "eleven_v3"
 
 audio = elevenlabs.text_to_speech.convert(
-    text="The first move is what sets everything in motion.",
-    voice_id="JBFqnCBsd6RMkjVDRZzb",  # "George" - browse voices at elevenlabs.io/app/voice-library
-    model_id="eleven_v3",
-    output_format="mp3_44100_128",
+    text = "Warning! You've exceeded 1 gallon of water. KILL YOURSELF!",
+    voice_id = VOICE_ID,
+    model_id = VOICE_MODEL,
+    output_format = "mp3_44100_128",
 )
+
 play(audio)
