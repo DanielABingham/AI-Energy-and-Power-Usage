@@ -20,6 +20,8 @@ function App() {
     carbon: { used: 0.0, unit: "gCO2e" },
   };
 
+  const waterBottles = energyData.water.used / 500
+
   // Auto-scroll to bottom whenever messages or typing state changes
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -144,6 +146,7 @@ function App() {
             </span>
           </div>
         </div>
+        <div className="hide">You used the equivalent of {waterBottles} water bottles!</div>
 
         <div className="stat-card">
           <div className="stat-icon">⚡</div>
@@ -155,6 +158,7 @@ function App() {
             </span>
           </div>
         </div>
+        <div className="hide">You used enough electricity to power: </div>
 
         <div className="stat-card">
           <div className="stat-icon">♻️</div>
@@ -166,6 +170,7 @@ function App() {
             </span>
           </div>
         </div>
+        <div className="hide">You emitted as much carbon dioxide as </div>
 
         <p className="sidebar-note">Updates with each prompt</p>
       </aside>

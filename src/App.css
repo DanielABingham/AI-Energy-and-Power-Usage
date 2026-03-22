@@ -342,6 +342,19 @@ body {
 }
 /* end fix issue with grey background on messages area on Chrome, Safari, Edge */
 
+.hide {
+  display: none;
+}
+
+.stat-card:hover + .hide {
+  display: block;
+  color: #9e9e9e;
+  border-radius: 12px;
+  background: #1a1a1a;
+  align-items: center;
+  padding: 10px;
+}
+
 /* ── Tablet ── */
 @media (max-width: 900px) {
   .sidebar {
